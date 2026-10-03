@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dziennik — instrukcja od A do Z</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { max-width: 100vw; overflow-x: hidden; -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; }
+body { font-family: 'Inter','Segoe UI',Arial,sans-serif; color: #050f0a;
+background: #b9d2c6 radial-gradient(1150px 520px at 86% -5%, rgba(20,184,166,.25), transparent 60%), radial-gradient(900px 480px at 4% 0%, rgba(56,189,248,.18), transparent 55%), linear-gradient(180deg,#a9c8b8,#c2dcd0); }
+#progress { position: fixed; top: 0; left: 0; height: 16px; width: 0; z-index: 100; background: linear-gradient(90deg,#14b8a6,#34d399,#fbbf24); box-shadow: 0 2px 18px rgba(20,184,166,1); border-radius: 0 8px 8px 0; }
+nav { position: sticky; top: 16px; z-index: 50; background: linear-gradient(135deg,#0b3a2e,#0c1a14); backdrop-filter: blur(14px); border-bottom: 3px solid #2dd4bf; box-shadow: 0 10px 28px rgba(12,26,20,.28); padding: 14px 26px; display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk',sans-serif; font-weight: 700; font-size: 18px; color: #f2f8f4; text-decoration: none; margin-right: 6px; }
+.navright { margin-left: auto; display: flex; gap: 24px; align-items: center; }
+.dd { position: relative; margin-right: 10px; }
+.dd > button { background: linear-gradient(135deg,#14b8a6,#0d9488); border: none; color: #04120c; border-radius: 12px; padding: 12px 26px; font-size: 14.5px; font-weight: 800; cursor: pointer; letter-spacing: .5px; box-shadow: 0 4px 16px rgba(20,184,166,.35); }
+.dd.help > button { background: #fff; border: 1px solid #0c1a14; color: #0c1a14; box-shadow: none; }
+.dd > button:hover { filter: brightness(1.12); }
+.dd .panel { display: none; position: absolute; top: calc(100% + 10px); left: 0; min-width: 560px; max-width: min(680px,92vw); max-height: 66vh; overflow: auto; background: #ffffff; border: 2px solid #4e8a6c; border-radius: 16px; padding: 14px; box-shadow: 0 24px 60px rgba(16,40,30,.45); z-index: 80; }
+.dd.open .panel { display: grid; grid-template-columns: 190px 1fr; gap: 12px; }
+.dd.help.open .panel { display: block; min-width: 320px; }
+.dd .cat { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; background: transparent; border: 1px solid transparent; color: #0d241a; border-radius: 10px; padding: 9px 11px; font-size: 14.5px; font-weight: 700; cursor: pointer; }
+.dd .cat:hover, .dd .cat.on { background: #cde9da; border-color: #0a7c66; color: #065f4d; }
+.dd .cat small { margin-left: auto; color: #2b463b; font-weight: 600; }
+.dd .funcs h4 { font-size: 16px; color: #050f0a; margin-bottom: 4px; }
+.dd .funcs p { font-size: 13.5px; color: #1d3a2e; margin-bottom: 8px; line-height: 1.5; }
+.dd .funcs a { display: block; color: #0d241a; text-decoration: none; font-size: 14px; padding: 7px 10px; border-radius: 8px; border: 1px solid transparent; }
+.dd .funcs a:hover { background: #cde9da; border-color: #0a7c66; color: #065f4d; }
+.dd .funcs a b { color: #fbbf24; margin-right: 6px; }
+.apkbtn { margin-left: 0; background: #fbbf24; color: #231a03; font-weight: 800; font-size: 13px; text-decoration: none; border-radius: 12px; padding: 11px 20px; }
+.apkbtn:hover { filter: brightness(1.08); }
+nav .cnt { display: flex; align-items: center; gap: 4px; color: #050f0a; font-size: 14px; font-weight: 800; background: #fff; border: 2px solid #4e8a6c; border-radius: 12px; padding: 6px 10px; }
+nav .cnt .jump { font-size: 15px; font-weight: 800; color: #050f0a; min-width: 26px; text-align: right; font-variant-numeric: tabular-nums; }
+nav .cnt small { color: #1d3a2e; font-weight: 700; }
+
+.slide { min-height: calc(100vh - 53px); padding: 30px 5vw; display: flex; gap: 28px; align-items: center; justify-content: space-between; border-bottom: 1px solid #9cc9b2; max-width: 1220px; margin: 0 auto; scroll-margin-top: 70px; opacity: 1; transform: none; transition: opacity .5s, transform .5s; background: linear-gradient(165deg,#ffffff,#ffffff 70%,#f2fbf6); border: 2px solid #4e8a6c; border-bottom: 3px solid #3a6e54; border-radius: 18px; box-shadow: 0 22px 52px rgba(13,42,31,.38), 0 2px 0 rgba(134,189,166,.6); margin-bottom: 18px; }
+.slide.vis { opacity: 1; transform: none; }
+.slide.flash { animation: flash 1.6s; }
+@keyframes flash { 0%,100% { background: transparent; } 20% { background: rgba(20,184,166,.13); border-radius: 18px; } }
+.slide .txt { flex: 1.25; }
+.slide .img { flex: 1; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 8px; margin-right: -2vw; min-width: 0; }
+.slide .img img { max-height: 72vh; max-width: 100%; border-radius: 18px; border: 2px solid #7fb89c; cursor: zoom-in; box-shadow: 0 16px 48px rgba(16,40,30,.28); background: #fff; transition: transform .35s ease; filter: contrast(1.15) saturate(1.15) brightness(1.03); }
+.slide .img img:hover { transform: scale(1.05); z-index: 5; position: relative; box-shadow: 0 20px 60px rgba(16,40,30,.3); }
+#start .img img { max-height: 76vh; }
+#start .img img:hover { transform: scale(1.08); }
+.gallery { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.gallery img { width: 112px; height: 150px; object-fit: cover; border-radius: 12px; border: 2px solid #7fb89c; cursor: zoom-in; filter: contrast(1.12) saturate(1.12); transition: transform .3s ease; }
+.gallery img:hover { transform: scale(1.08); }
+.shots { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; max-width: 100%; }
+.shots img { display: none; }
+.shots img.on { display: block; animation: shotIn .3s ease; }
+@keyframes shotIn { from { opacity: 0; transform: translateY(8px) scale(.99); } to { opacity: 1; transform: none; } }
+.shots .dots { display: flex; gap: 9px; margin-right: 12px; }
+.shots .dots .dot { width: 13px; height: 13px; border-radius: 50%; border: 2px solid #0d9488; background: transparent; cursor: pointer; padding: 0; }
+.shots .dots .dot.on { background: #14b8a6; }
+body.dark .shots img { border-color: #37624f; }
+body.dark .shots .dots .dot { border-color: #2dd4bf; }
+body.dark .shots .dots .dot.on { background: #2dd4bf; }
+.cap { font-size: 13px; font-weight: 700; color: #0d241a; margin-top: 8px; text-align: center; background: #eef8f1; border: 2px solid #7fb89c; border-radius: 10px; padding: 7px 12px; }
+.kicker { display: inline-block; color: #04120c; background: linear-gradient(90deg,#2dd4bf,#fbbf24); font-size: 27px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 14px; padding: 9px 24px; border-radius: 24px; }
+h1 { font-family: 'Space Grotesk',sans-serif; font-size: 52px; line-height: 1.08; margin-bottom: 12px; color: #0c1a14; }
+h1 .grad { background: linear-gradient(90deg,#2dd4bf,#fbbf24); -webkit-background-clip: text; background-clip: text; color: transparent; }
+h2 { font-family: 'Space Grotesk',sans-serif; font-size: 32px; margin-bottom: 16px; color: #0c1a14; }
+h2 .em { background: linear-gradient(90deg,#2dd4bf,#fbbf24); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+ul { list-style: none; }
+li { font-size: 17px; margin-bottom: 11px; padding-left: 28px; position: relative; line-height: 1.6; color: #12291f; }
+li::before { content: "▸"; color: #0a7c66; position: absolute; left: 0; font-weight: bold; }
+li b { color: #050f0a; }
+.step { background: #eef8f1; border: 2px solid #7fb89c; border-radius: 14px; padding: 13px 16px; margin-bottom: 12px; font-size: 16.5px; line-height: 1.55; color: #0d241a; }
+.step b.num { color: #0a7c66; margin-right: 8px; font-size: 17px; font-weight: 800; }
+.tip { background: #fff3cf; border: 1px solid #c79a00; border-radius: 12px; padding: 10px 14px; font-size: 15px; font-weight: 600; color: #4a3800; margin-top: 10px; }
+.warn { background: #fbe3e3; border: 1px solid #c22; border-radius: 12px; padding: 10px 14px; font-size: 15px; font-weight: 600; color: #6b1010; margin-top: 10px; }
+.toc { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.toc a { background: #0c1a14; border: 1px solid #0c1a14; border-radius: 14px; padding: 14px 18px; color: #ffffff; text-decoration: none; font-size: 20px; font-weight: 800; }
+.toc a:hover { border-color: #0d9488; background: #123026; color: #5eead4; }
+.badges { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
+.badges span { font-size: 12px; font-weight: 800; padding: 6px 13px; border-radius: 20px; background: #0c1a14; border: 1px solid #0c1a14; color: #ffffff; }
+.badges span.gold { background: #b45309; border-color: #b45309; color: #fff; }
+.cta { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0 6px; }
+.cta a { text-decoration: none; font-weight: 800; font-size: 19px; padding: 16px 30px; border-radius: 16px; }
+.cta .go { background: linear-gradient(135deg,#14b8a6,#fbbf24); color: #04120c; }
+.cta .more { background: #0c1a14; color: #ffffff; border: 1px solid #0c1a14; font-size: 30px; padding: 24px 58px; border-radius: 20px; display: inline-block; }
+#topBtn { display: none; position: fixed; right: 26px; bottom: 26px; z-index: 90; width: 168px; height: 168px; border-radius: 50%; border: 3px solid #0a7c66; background: #050f0a; color: #fff; font-size: 86px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 30px rgba(5,15,10,.5); }
+#topBtn.show { display: grid; place-items: center; }
+#topBtn:hover { background: #0d241a; }
+.navbtns { display: none; }
+#lb { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.9); place-items: center; cursor: zoom-out; }
+#lb.open { display: grid; }
+#lb img { max-width: 92vw; max-height: 90vh; border-radius: 16px; border: 1px solid #2dd4bf; }
+.pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.pills a { font-size: 12.5px; font-weight: 700; color: #050f0a; background: #fff; border: 2px solid #4e8a6c; border-radius: 20px; padding: 5px 12px; text-decoration: none; }
+.themebtn { width: 44px; height: 44px; border-radius: 12px; border: 1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.12); color: #fff; font-size: 19px; cursor: pointer; line-height: 1; }
+.themebtn:hover { background: rgba(255,255,255,.24); }
+#katList { border-right: 2px solid #b9d4c4; padding-right: 10px; }
+body.dark { color: #d7e8df; background: #050c09 radial-gradient(1150px 540px at 86% -5%, rgba(20,184,166,.16), transparent 60%), radial-gradient(900px 500px at 4% 0%, rgba(56,189,248,.09), transparent 55%), linear-gradient(180deg,#040a08,#081310); }
+body.dark .slide { background: linear-gradient(165deg,#203a2e,#172c23 60%,#13271f); border-color: #3a6753; border-bottom-color: #41735d; box-shadow: 0 20px 52px rgba(0,0,0,.65), inset 0 0 0 1px rgba(45,212,191,.10); }
+body.dark h1, body.dark h2 { color: #eef7f2; }
+body.dark li { color: #bfd4ca; }
+body.dark li b { color: #f2f8f4; }
+body.dark .slide p { color: #bfd4ca !important; }
+body.dark .slide p b { color: #f2f8f4 !important; }
+body.dark .step { background: #12241e; border-color: #27503f; color: #cfe3d9; }
+body.dark .step b.num { color: #2dd4bf; }
+body.dark .tip { background: #2a2410; border-color: #a1791b; color: #f3e3b3; }
+body.dark .warn { background: #2a1414; border-color: #a33; color: #f3c9c9; }
+body.dark .toc a { background: #0e1a15; border-color: #2b4a3f; color: #eaf4ee; }
+body.dark .toc a:hover { border-color: #2dd4bf; background: #14251f; color: #5eead4; }
+body.dark .cta .more { background: #16302a; border-color: #2b4a3f; }
+body.dark .cap { background: #12241e; border-color: #2b4a3f; color: #cfe3d9; }
+body.dark .pills a { background: #12241e; color: #eaf4ee; border-color: #3a5c4f; }
+body.dark .dd .panel { background: #0f1c16; border-color: #2b4a3f; }
+body.dark #katList { border-right-color: #2b4a3f; }
+body.dark .dd .cat { color: #d5e6de; }
+body.dark .dd .cat:hover, body.dark .dd .cat.on { background: #16302a; border-color: #2dd4bf; color: #7ce8d8; }
+body.dark .dd .cat small { color: #9db8ab; }
+body.dark .dd .funcs h4 { color: #f2f8f4; }
+body.dark .dd .funcs p { color: #9db8ab; }
+body.dark .dd .funcs a { color: #c6d8cf; }
+body.dark .dd .funcs a:hover { background: #16302a; border-color: #2dd4bf; color: #7ce8d8; }
+body.dark .dd.help > button { background: #0f1c16; border-color: #3a5c4f; color: #eaf4ee; }
+body.dark nav .cnt { background: #0f1c16; border-color: #2b4a3f; color: #eaf4ee; }
+body.dark nav .cnt .jump { color: #eaf4ee; }
+body.dark nav .cnt small { color: #9db8ab; }
+body.dark .gallery img { border-color: #2b4a3f; }
+@media (max-width: 860px) {
+  .slide { flex-direction: column; padding: 22px 4vw; align-items: stretch; gap: 18px; min-height: 0; }
+  .slide .txt { flex: none; width: 100%; }
+  .slide .img { flex: none; width: 100%; align-items: center; margin-right: 0; }
+  .slide .img img { max-height: 62vh; width: auto; max-width: 100%; }
+  #start .img img { max-height: 66vh; }
+  .shots { align-items: center; width: 100%; }
+  .shots .dots { margin-right: 0; }
+  h1 { font-size: 32px; }
+  h2 { font-size: 22px; }
+  .kicker { font-size: 18px; padding: 7px 14px; letter-spacing: 1.5px; }
+  li { font-size: 15.5px; }
+  .step { font-size: 15px; }
+  .toc { grid-template-columns: 1fr; }
+  .toc a { font-size: 16px; padding: 12px 14px; }
+  .cta .more { font-size: 22px; padding: 18px 34px; }
+  .cta a { font-size: 16px; padding: 13px 20px; }
+  .dd .panel { grid-template-columns: 1fr; left: 0; width: calc(100vw - 24px); min-width: 0; max-width: calc(100vw - 24px); }
+  .dd.help.open .panel { min-width: 0; }
+  nav { position: sticky; top: 0; gap: 10px; padding: 10px 12px; }
+  .brand { font-size: 16px; }
+  .navright { gap: 8px; }
+  .dd { margin-right: 0; }
+  .dd > button { padding: 10px 14px; font-size: 12.5px; border-radius: 10px; }
+  .dd.help > button { padding: 10px 14px; font-size: 12.5px; }
+  .apkbtn { margin-left: 0; padding: 9px 14px; font-size: 12px; }
+  .themebtn { width: 40px; height: 40px; font-size: 17px; }
+  #topBtn { width: 96px; height: 96px; font-size: 46px; right: 12px; bottom: 12px; }
+  #progress { height: 12px; }
+  .gallery img { width: 92px; height: 124px; }
+  .cap { font-size: 12px; }
+  .pills a { font-size: 11.5px; }
+  .badges span { font-size: 11px; }
+}
+@media (max-width: 420px) {
+  .dd > button { padding: 9px 10px; font-size: 11.5px; }
+  .dd.help > button { padding: 9px 10px; font-size: 11.5px; }
+  .brand { font-size: 15px; }
+  nav .cnt { font-size: 12.5px; padding: 5px 8px; }
+  h1 { font-size: 27px; }
+  h2 { font-size: 20px; }
+  .slide { padding: 18px 3.5vw; }
+}
+
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="#start">Dziennik</a>
+  <div class="dd" id="ddKat"><button id="katBtn">KATEGORIE</button>
+    <div class="panel"><div id="katList"></div><div class="funcs" id="katFuncs"></div></div>
+  </div>
+  <span class="cnt" id="cnt"><b class="jump" id="curNum">1</b><small>/ <span id="total">98</span></small></span>
+  <span class="navright">
+  <div class="dd help" id="ddHelp"><button id="helpBtn">POMOC</button>
+    <div class="panel funcs" id="helpPanel"></div>
+  </div>
+  <button class="themebtn" id="themeBtn" type="button" title="Ciemny / jasny motyw">🌙</button>
+  </span>
+</nav>
+<button id="topBtn" title="Do gory">&#8593;</button>
+<div id="progress"></div>
+
+
+<section class="slide" id="start">
+  <div class="txt">
+    <div class="kicker">Instrukcja obslugi v2</div>
+    <h1><span class="grad">Dziennik</span></h1>
+    <p style="font-size:18px;color:#3f5a4e;margin-bottom:6px;line-height:1.6">Prywatny dziennik, dietetyk, trener i straznik czasu ekranu w jednym. Wszystko dziala <b style="color:#0c1a14">na Twoim telefonie</b> - offline. AI tylko gdy sam zapytasz.</p>
+    <!-- ikonki usuniete -->
+    <div class="cta"><a class="more" href="#przewodnik">Od czego zacząć</a></div>
+    <div class="toc">
+      <a href="#startapp">Start i nawigacja</a><a href="#dziennik">Dziennik</a>
+      <a href="#notatki">Notatki i kapsuly</a><a href="#cn">Nawyki i cytaty</a>
+      <a href="#dieta">Dieta AI</a><a href="#sport">Sport</a>
+      <a href="#limity">Limity ekranu</a><a href="#plany">Plany</a>
+      <a href="#ustawienia">Ustawienia</a><a href="#dane">Dane i kopie</a>
+    </div>
+  </div>
+  <div class="img"><img src="assets/screen-001.png" loading="lazy" alt="Ekran Start"><div class="cap">📍 Ekran główny — liczniki i Szybki AI</div></div>
+</section>
+
+<section class="slide" id="przewodnik" style="flex-direction:column;align-items:stretch;gap:18px">
+  <div class="txt">
+    <div class="kicker">Przewodnik po stronie</div>
+    <h2>Jak <span class="em">poruszać się</span> po stronie</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div>
+        <div class="step"><b class="num">1</b><b>Przycisk KATEGORIE</b> (na górze) — menu apki: Start, Dziennik, Notatki, CN, Dieta, Sport, Limity, Plany, Ustawienia, Dane. Kliknij kategorię, potem funkcję — przeniesiesz się na konkretny slajd.</div>
+        <div class="step"><b class="num">2</b><b>Przycisk POMOC</b> (na górze) — skoki do sekcji instrukcji: Instalacja, Uprawnienia, Przewodnik po stronie.</div>
+      </div>
+      <div>
+        <div class="step"><b class="num">3</b><b>Motyw jasny / ciemny</b> — przycisk 🌙/☀️ na górze przełącza motyw. Ustawienie zapamiętuje się.</div>
+        <div class="step"><b class="num">4</b><b>Strzałka ↑</b> (w prawym dolnym rogu) — szybki powrót na górę strony.</div>
+      </div>
+    </div>
+    <div class="tip">Zaczynamy od <b>Instalacji</b>, potem <b>Uprawnienia</b>, potem poznanie apki.</div>
+  </div>
+  <div class="img" style="align-items:center;margin-right:0"><img src="assets/przewodnik-kategorie.png" loading="lazy" alt="Kategorie aplikacji" style="max-height:40vh"><div class="cap">☰ Kategorie — stąd otworzysz każdą z sekcji</div></div>
+</section>
+
+<!-- slownik usuniety na zyczenie -->
+
+<!-- ============ INSTALACJA ============ -->
+<section class="slide" id="instalacja">
+  <div class="txt">
+    <div class="kicker">1.1 / Instalacja</div>
+    <h2><span class="em">Instalacja</span> — 3 kroki</h2>
+    <div class="step"><b class="num">1</b><b>Pobierz plik na telefon</b> — kablem USB, mailem, Drive'em albo komunikatorem. Plik: <b>installer-dziennik.apk</b>.</div>
+    <div class="step"><b class="num">2</b><b>Kliknij na niego</b> — pojawi się informacja, że aplikacja nie jest z Google Play. <b>Ale klikamy „Instaluj" mimo to</b> — to normalne, apka jest spoza Sklepu Play.</div>
+    <div class="step"><b class="num">3</b><b>Aplikacja się zainstalowała</b> 👍 — ikona 📓 ląduje na liście apek.</div>
+    <div class="tip"><b>Co w przypadku aktualizacji aplikacji jak będzie?</b> Po prostu instalujesz nowy plik <b>bez odinstalowywania poprzedniego</b> — wszystkie dane zostają.</div>
+  </div>
+  <div class="img"><img src="assets/inst-trzy-kroki.png" loading="lazy" alt="Trzy kroki instalacji"><div class="cap">📍 Pobierz APK → kliknij → Instaluj mimo ostrzeżenia</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">1.2 / Instalacja</div>
+    <h2>Instalacja: <span class="em">zgoda na nieznane apki</span></h2>
+    <div class="step"><b class="num">1</b>Przy pierwszym kliknięciu APK telefon zapyta o zgodę: włącz <b>„Instaluj nieznane aplikacje"</b> dla Chrome/Pliki.</div>
+    <div class="step"><b class="num">2</b>Włącz przełącznik i wróć do pliku — kliknij <b>Instaluj</b> ponownie.</div>
+    <div class="step"><b class="num">3</b>Po kilkunastu sekundach: <b>Gotowe</b> → <b>Otwórz</b>. Apka startuje od razu na ekranie Start.</div>
+    <div class="tip">To jednorazowa zgoda — przy kolejnych aktualizacjach telefon już nie pyta.</div>
+  </div>
+  <div class="img"><img src="assets/inst-trzy-kroki.png" loading="lazy" alt="Trzy kroki instalacji"><div class="cap">📍 Ustawienia → Aplikacje → znajdź Dziennik</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">1.3 / Instalacja</div>
+    <h2><span class="em">Aktualizacja</span> i problemy</h2>
+    <ul>
+      <li><b>Aktualizacja</b>: wgraj nowszy plik APK i zainstaluj <b>na wierzch</b> — wszystkie dane <b>zostają</b> (nic nie odinstalowuj!).</li>
+      <li><b>„Nie zainstalowano"</b>: sprawdź miejsce w telefonie i zgodę na nieznane aplikacje.</li>
+      <li><b>Apka nie startuje</b>: uruchom ponownie telefon; ostatecznie reinstalacja (najpierw zrób <b>kopię: Dane → Pobierz pełną kopię</b>).</li>
+      <li><b>Ikona zniknęła?</b> Sprawdź szufladę aplikacji (lista wszystkich apek), nie tylko pulpit.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">1.4 / Instalacja</div>
+    <h2>Częste <span class="em">problemy</span> i kruczki</h2>
+    <ul>
+      <li><b>„Nie można zainstalować"</b> → za mało miejsca albo brak zgody na nieznane aplikacje (Ustawienia tel. → Aplikacje → Chrome/Pliki → Instaluj nieznane aplikacje).</li>
+      <li><b>Starszy Android</b> (8–10): większość działa, ale nakładki limitów i dokładne alarmy mogą kaprysić — limity najlepiej od Androida 11+.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ UPRAWNIENIA ============ -->
+<section class="slide" id="uprawnienia">
+  <div class="txt">
+    <div class="kicker">2.1 / Uprawnienia</div>
+    <h2>Krok 1: <span class="em">Ustawienia → Aplikacje</span></h2>
+    <div class="step"><b class="num">1</b>Wejdź w <b>Ustawienia</b> telefonu.</div>
+    <div class="step"><b class="num">2</b>Otwórz <b>Aplikacje</b> (lista wszystkich zainstalowanych apek).</div>
+    <div class="step"><b class="num">3</b>Znajdź na liście <b>Dziennik</b> i wejdź w niego.</div>
+    <div class="tip">Zdjęcia pokazują: lista Aplikacji → po wejściu w Dziennik.</div>
+  </div>
+  <div class="img"><div class="shots"><img class="on" src="assets/inst-aplikacje.webp" loading="lazy" alt="Ustawienia → Aplikacje"><img src="assets/inst-aplikacje-dziennik.webp" loading="lazy" alt="Aplikacja Dziennik"></div><div class="cap">📍 Ustawienia → Aplikacje → Dziennik</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">2.2 / Uprawnienia</div>
+    <h2>Krok 2–4: <span class="em">Zasilanie i uprawnienia</span></h2>
+    <div class="step"><b class="num">1</b>Odszukaj <b>Dziennik → Zasilanie → Bez Ograniczeń</b>.</div>
+    <div class="step"><b class="num">2</b><b>Uprawnienia aplikacji</b> → włączasz <b>wszystkie uprawnienia</b>.</div>
+    <div class="step"><b class="num">3</b><b>Inne uprawnienia</b> → zaznaczasz <b>wszystko</b>.</div>
+    <div class="tip">W powiadomieniach możesz ustawić <b>dźwięk dla powiadomienia tylko dla tej aplikacji</b>.</div>
+  </div>
+  <div class="img"><div class="shots"><img class="on" src="assets/inst-04-uprawnienia.png" loading="lazy" alt="Uprawnienia aplikacji"><img src="assets/inst-05-inne-uprawnienia.png" loading="lazy" alt="Inne uprawnienia"><img src="assets/inst-06-zasilanie.png" loading="lazy" alt="Zasilanie — bez ograniczeń"></div><div class="cap">📍 Zasilanie → Bez ograniczeń, Uprawnienia, Inne uprawnienia</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">2.3 / Uprawnienia</div>
+    <h2>Krok 5: <span class="em">Autostart w tle</span></h2>
+    <div class="step"><b class="num">1</b><b>Ustawienia → Autostart w tle</b> → zaznaczasz <b>Dziennik</b>.</div>
+    <div class="step"><b class="num">2</b>Dzięki temu apka działa w tle i przypomnienia są na czasie.</div>
+  </div>
+  <div class="img"><div class="shots"><img class="on" src="assets/inst-07-autostart.png" loading="lazy" alt="Autostart — zaznacz Dziennik"><img src="assets/inst-08-ustawienia-dostepu.png" loading="lazy" alt="Ustawienia dostępu — Pobrane apk"></div><div class="cap">📍 Ustawienia → Autostart w tle → zaznacz Dziennik</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">2.4 / Uprawnienia</div>
+    <h2>Krok 6: <span class="em">Ustawienia dostępu</span></h2>
+    <div class="step"><b class="num">1</b><b>Ustawienia → Ustawienia dostępu → Pobrane aplikacje → Dziennik</b>.</div>
+    <div class="step"><b class="num">2</b>Włącz usługę Dziennik — apka liczy minuty na ekranie.</div>
+  </div>
+  <div class="img"><div class="shots"><img class="on" src="assets/inst-08-ustawienia-dostepu.png" loading="lazy" alt="Ustawienia dostępu — Pobrane apk"></div><div class="cap">📍 Ustawienia dostępu → Pobrane aplikacje → Dziennik</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">2.5 / Uprawnienia</div>
+    <h2>Włączona <span class="em">usługa Dziennik</span></h2>
+    <ul>
+      <li><b>Ułatwienia dostępu</b> → <b>Pobrane aplikacje</b> → <b>Dziennik</b> → przełącznik <b>Włącz</b>.</li>
+      <li>Bez tego limity nie widzą, co masz na ekranie — apka o to prosi sama guzikiem.</li>
+      <li><b>Dostęp do użycia</b>: Ustawienia tel. → Aplikacje → Specjalny dostęp → <b>Dostęp do użycia</b> → Dziennik → <b>Zezwól</b> (liczenie minut).</li>
+      <li><b>Nakładki</b> (wyświetlanie nad innymi): apka poprosi sama przy pierwszym limicie.</li>
+      <li><b>Dokładne alarmy</b>: apka poprosi przy pauzie (Android 12+).</li>
+    </ul>
+  </div>
+  <div class="img"><div class="shots"><img class="on" src="assets/inst-10-wlacz-usluge.png" loading="lazy" alt="Włącz usługę Dziennik"><img src="assets/inst-09-dostepu-wlaczenie.png" loading="lazy" alt="Ustawienia dostępu — włączenie"></div><div class="cap">📍 Włącz usługę Dziennik</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">2.6 / Uprawnienia</div>
+    <h2>Po co <span class="em">zgody</span> i internet</h2>
+    <ul>
+      <li><b>Powiadomienia</b> → żeby apka mogła Ci <b>przypomnieć</b> o wpisie (np. codziennie o 21:00). Bez zgody przypomnienia po cichu nie zadziałają.</li>
+      <li><b>Mikrofon</b> → tylko do <b>notatek głosowych</b> (przytrzymujesz 🎙 we wpisie i mówisz; apka przepisuje mowę na tekst).</li>
+      <li><b>Ułatwienia dostępu + Dostęp do użycia</b> → <b>tylko</b> kategoria ⏳ Limity: dzięki nim apka widzi, ile minut spędzasz w TikToku/YouTube i potrafi wyświetlić bramkę. Reszta apki ich <b>nie potrzebuje</b>.</li>
+      <li><b>Bez internetu działa</b>: dziennik, notatki, plany, nawyki, cytaty, sport, ręczna dieta, motywy, dźwięki — czyli prawie wszystko.</li>
+      <li><b>Internet potrzebny do</b>: Szybkiego AI i czatu, analizy zdjęć posiłków, transkrypcji nagrań, kodów kreskowych (baza OpenFoodFacts).</li>
+      <li>Brak sieci = AI grzecznie mówi, że potrzebuje internetu; reszta bez zmian.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ POZNAWANIE APLIKACJI ============ -->
+<section class="slide" id="poznawanie">
+  <div class="txt">
+    <div class="kicker">3.0 → Start</div>
+    <h1 style="font-size:64px;letter-spacing:3px">POZNAJEMY <span class="grad">APKE</span></h1>
+    <p style="font-size:20px;color:#3f5a4e;line-height:1.6">Dziennik i Notatki — od A do Z. Krok po kroku, bez pominięć.</p>
+    <div class="step" style="font-size:22px;padding:16px 20px;line-height:1.7"><b class="num">1</b><b>Szybki AI</b> — tym zajmiemy się później</div>
+    <div class="step" style="font-size:22px;padding:16px 20px;line-height:1.7"><b class="num">2</b><b>Dashboard</b> — informacje (chyba nic tłumaczyć nie muszę)</div>
+    <div class="step" style="font-size:22px;padding:16px 20px;line-height:1.7"><b class="num">3</b><b>Ostatnie wpisy</b></div>
+  </div>
+</section>
+
+<section class="slide" id="poznawanie-3-1">
+  <div class="txt">
+    <div class="kicker">3.1 → Dziennik</div>
+    <h2>Odkrywamy <span class="em">aplikację</span></h2>
+    <div class="step"><b class="num">1</b>Kliknij <b>☰ Kategorie</b> i przejdź do <b>Dziennik</b>.</div>
+    <div class="step"><b class="num">2</b>Kliknij <b>+ Dodaj wpis</b>.</div>
+    <div class="step"><b class="num">3</b>Poznaj opcje na górze (nagłówek):</div>
+    <div class="tip" style="font-size:19px;padding:18px 22px;line-height:1.8"><b>Oko</b> na samej górze – blokuje AI (nie może zobaczyć co jest w tym CAŁYM wpisie).<br><b>Paleta</b> – odpala funkcje formatowania tekstu.<br><b>Pobieranie</b> – potem będziesz mógł wrzucić gdzieś indziej.<br><b>Kosz</b> – usuwasz wpis z potwierdzeniem.<br><b>Tytuł wpisu</b> – możesz zmienić.</div>
+  </div>
+</section>
+
+<section class="slide" id="poznawanie-3-2">
+  <div class="txt">
+    <div class="kicker">3.2 → Dziennik</div>
+    <h2>Edytor wpisu: <span class="em">tekst i tryby</span></h2>
+    <div class="step"><b class="num">1</b><b>Misja dnia</b> – tu możesz napisać pierwszy tekst, który będzie widoczny na wpisie.</div>
+    <div class="step"><b class="num">2</b><b>Tryby</b> – po prawej masz pisanie/podgląd; tutaj działa formatowanie.</div>
+    <div class="step"><b class="num">3</b><b>Tagi</b> – możesz dodać nowy tag, aby oznaczyć sobie jakoś dzień (np. „Święta") – potem w wyszukiwarce możesz po tym wyszukać.</div>
+    <div class="step"><b class="num">4</b><b>Dodaj kategorię</b>: możesz zmienić nazwę; klikając oko zablokujesz AI dla jednej kategorii w wpisie.</div>
+  </div>
+</section>
+
+<section class="slide" id="poznawanie-3-3">
+  <div class="txt">
+    <div class="kicker">3.3 → Dziennik</div>
+    <h2>Szybkie <span class="em">narzędzia</span></h2>
+    <div class="step"><b class="num">1</b><b>Formatowanie szybko</b> – paski skrótów nad klawiaturą.</div>
+    <div class="step"><b class="num">2</b><b>Tryb pisania/podglądu</b> – przełączasz widok edycji.</div>
+    <div class="step"><b class="num">3</b><b style="color:#c22;font-weight:800">Usuwanie BEZ POTWIERDZENIA</b> – <b style="color:#c22">uwaga, element znika od razu</b>.</div>
+    <div class="step"><b class="num">4</b><b>Nagrania głosowe</b> – FUNKCJA OBECNIE NIE DZIAŁA.</div>
+    <div class="step"><b class="num">5</b><b>Załączanie plików</b> – potem możesz je też pobrać.</div>
+  </div>
+</section>
+
+<section class="slide" id="poznawanie-3-4">
+  <div class="txt">
+    <div class="kicker">3.4 → Dziennik</div>
+    <h2>Tytuł, data i <span class="em">tydzień</span></h2>
+    <div class="step"><b class="num">1</b>W tytule wpisu masz <b>datę wpisu</b> – tam możesz ustalić, kiedy wpis będzie zapisany według układu w kategorii.</div>
+    <div class="step"><b class="num">2</b>Wyjdź z wpisu i przejdź do <b>Tygodnia</b> – tam można utworzyć podsumowanie tygodnia.</div>
+  </div>
+</section>
+
+<section class="slide" id="poznawanie-3-5">
+  <div class="txt">
+    <div class="kicker">3.5 → Notatka</div>
+    <h2><span class="em">Notatki</span> + kapsuła czasu</h2>
+    <div class="step"><b class="num">1</b>Notatki działają identycznie jak dni praktycznie — nie tłumaczę, bo sobie poradzisz.</div>
+    <div class="warn"><b>ZWRÓĆ TYLKO UWAGĘ NA KAPSUŁĘ CZASU</b> — notatka zapieczętowana do wybranej daty.</div>
+  </div>
+</section>
+
+<!-- ============ KLUCZE + AI ============ -->
+<section class="slide" id="klucze">
+  <div class="txt">
+    <div class="kicker">4.1 → Klucz</div>
+    <h2>Skąd wziąć <span class="em">klucz Gemini</span>?</h2>
+    <div class="step"><b class="num">1</b>Na telefonie/komputerze wejdź na <b>aistudio.google.com/app/apikey</b> i zaloguj się kontem Google (to oficjalna strona Google dla programistów).</div>
+    <div class="step"><b class="num">2</b>Stuknij <b>Create API key</b> → skopiuj długi napis (litery i cyfry). To jak <b>hasło apki do AI</b> — nikomu go nie pokazuj i nie wklejaj w internecie.</div>
+    <div class="step"><b class="num">3</b>Klucz jest <b>darmowy</b> (Google daje dzienny limit zapytań — do normalnego używania wystarcza). Możesz zrobić kilka kluczy na zapas.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">4 / Klucze API i AI</div>
+    <h2>Dodawanie <span class="em">klucza w apce</span></h2>
+    <div class="step"><b class="num">1</b>Otwórz <b>Ustawienia (⚙️ na dole ekranu)</b> → przewiń do sekcji <b>🔑 Klucze API Gemini</b>.</div>
+    <div class="step"><b class="num">2</b><b>Wklej klucz</b> w pole → <b>Dodaj</b>. Limit: <b>maks. 3 klucze</b> (więcej nie wejdzie).</div>
+    <div class="step"><b class="num">3</b>Pierwszy klucz dostaje plakietkę <b>GŁÓWNY</b> (z niego korzysta AI), reszta to ZAPAS. Gdy główny się wyczerpie (limit Google), apka <b>sama bierze następny</b>. ✕ usuwa klucz.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">4 / Klucze API i AI</div>
+    <h2>⚡ <span class="em">Szybki AI</span> — gdzie i jak</h2>
+    <ul>
+      <li><b>Gdzie:</b> wielki przycisk <b>⚡ Szybki AI</b> na starcie (otwiera mini-czat na dole).</li>
+      <li><b>O co pytać:</b> np. „podsumuj mój tydzień", „co jadłem wczoraj", „ile trenowałem".</li>
+      <li><b>Tryb Formatowanie:</b> druga zakładka — przewodnik znaczników i przycisk formatujący zaznaczenie.</li>
+      <li><b>Szukaj wszedzie</b> (dol ekranu): przeszukuje <b>wpisy, notatki, plany i cytaty</b> naraz. Wyniki grupuja sie sekcjami, stukniecie przenosi dokladnie tam. Zapieczetowane kapsuly pokazuja tylko klodke.</li>
+      <li><b>Pigulki</b> w tekscie (np. <b>#nawyk-2026-10-02</b>): stukniecie przenosi do dnia, nawyku, diety albo treningu.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-003.png" loading="lazy" alt="Szybki AI"></div><div class="cap">📍 Start → ⚡ Szybki AI (mini-czat wysuwany z dołu)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">4 / Klucze API i AI</div>
+    <h2>AI a <span class="em">prywatność</span></h2>
+    <ul>
+      <li>AI zna: wpisy, notatki, plany, <b>nawyki, cytaty, dietę z dziś i sport</b>.</li>
+      <li>AI <b>nigdy nie dostaje</b>: fragmentów <b>[[PRIVATE]]</b> i treści <b>zapieczętowanych kapsuł</b>.</li>
+      <li>AI jest też w: diecie (analiza posiłków, czat), transkrypcjach nagrań, edycji posiłku.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">4 / Klucze API i AI</div>
+    <h2>Gdy klucz <span class="em">się wyczerpie</span></h2>
+    <ul>
+      <li>Google daje <b>dzienny limit darmowych zapytań</b> na klucz — przy intensywnym pytaniu może paść po południu.</li>
+      <li>Apka <b>sama bierze następny klucz</b> z listy (dlatego warto mieć 2–3). Nic nie musisz robić.</li>
+      <li>Wszystkie padły? AI napisze o limicie — <b>wróć rano</b> albo dodaj świeży klucz z AI Studio.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">4 / Klucze API i AI</div>
+    <h2>Przykładowa <span class="em">rozmowa</span> z AI</h2>
+    <div class="step"><b class="num">1</b>Otwórz <b>⚡ Szybki AI</b>, wpisz np. <b>„podsumuj mój tydzień"</b> → Enter.</div>
+    <div class="step"><b class="num">2</b>AI czyta Twoje wpisy, nawyki i posiłki i odpowiada po polsku, krótko i konkretnie.</div>
+    <div class="step"><b class="num">3</b>Dopytaj: <b>„a co z dietą?"</b> — pamięta kontekst rozmowy. Błąd sieci/klucza pokazuje na czerwono z powodem.</div>
+  </div>
+</section>
+
+<!-- ============ START ============ -->
+<section class="slide" id="startapp">
+  <div class="txt">
+    <div class="kicker">5 / Start</div>
+    <h2>Ekran <span class="em">startowy</span></h2>
+    <ul>
+      <li>To <b>pierwszy ekran po otwarciu apki</b> (nagłówek „Aplikacja Dziennika"). Zawsze tu wracasz.</li>
+      <li><b>Liczniki</b> u góry: ile masz wpisów, notatek i plików + ile czasu spędziłeś w apce.</li>
+      <li>Wielki <b>⚡ Szybki AI</b> na całą szerokość otwiera mini-czat (pytania o Twoje dane).</li>
+      <li>Niżej: <b>najnowszy wpis</b> (stuknij, żeby otworzyć) i <b>ostatnie notatki</b>. Przyciski „Wszystkie" prowadzą do pełnych list.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-004.png" loading="lazy" alt="Ekran startowy"></div><div class="cap">📍 Ekran Start — otwiera się sam po starcie apki</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">5 / Start</div>
+    <h2><span class="em">Nawigacja</span> po apce</h2>
+    <ul>
+      <li>Na dole ekranu zawsze są 3 przyciski: <b>🔍 Szukaj</b> (szuka wszędzie), <b>☰ Kategorie</b> (siatka kategorii), <b>⚙️ Ustawienia</b>.</li>
+      <li><b>☰ Kategorie</b> otwiera siatkę 9 kategorii: Start, Dziennik, Notatki, Plany, Limity, Dieta, CN, Sport, Dane (puste pole na końcu = brak kategorii).</li>
+      <li><b>Aktywna kategoria ma kropkę</b> pod ikoną. Menu zamykasz stuknięciem w przyciemnione tło albo ☰ jeszcze raz.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-005.png" loading="lazy" alt="Menu kategorii"></div><div class="cap">📍 Dół ekranu → ☰ Kategorie (siatka 9 kategorii)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">5 / Start</div>
+    <h2>Pierwszy <span class="em">wpis</span> krok po kroku</h2>
+    <div class="step"><b class="num">1</b>Na starcie stuknij <b>„Stwórz Wpis"</b> (lub Kategorie → Dziennik → <b>+</b>).</div>
+    <div class="step"><b class="num">2</b>Wpisz tytuł, oceń dzień gwiazdkami (stuknij <b>połówkę</b> dla 0,5).</div>
+    <div class="step"><b class="num">3</b>Wróć — wpis jest już na starcie i w Dzienniku.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">5 / Start</div>
+    <h2><span class="em">Liczniki</span> i karty — co znaczą?</h2>
+    <ul>
+      <li><b>0 WPISÓW / NOTATEK / PLIKÓW</b> — ile masz rzeczy w apce (klikają do kategorii).</li>
+      <li><b>Czas w apce</b> — liczy się sam podczas używania (do statystyk i backupu).</li>
+      <li>Karty <b>NAJNOWSZY WPIS / OSTATNIE NOTATKI</b> + <b>Wszystkie ›</b> obok nagłówka = skok do pełnej listy.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- slajd Szukaj usuniety -->
+
+<!-- ============ USTAWIENIA ============ -->
+<section class="slide" id="ustawienia">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2>Co tu <span class="em">znajdziesz</span></h2>
+    <ul>
+      <li><b>Szablony</b> wpisów i planów (osobny rozdział 8) + <b>Motyw</b> (15 do wyboru, zmiana na żywo).</li>
+      <li><b>🔑 Klucze API</b> (maks. 3) • <b>🔊 Dźwięki</b> (3 przełączniki, trzymają się po restarcie).</li>
+      <li><b>★ Funkcje</b>: wyłącznik gwiazdek i kapsuł • <b>Przypomnienia</b> (godziny + test).</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-006.png" loading="lazy" alt="Ustawienia"></div><div class="cap">📍 Dół ekranu → ⚙️ Ustawienia (u góry: Szablony)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2><span class="em">Motyw</span> aplikacji</h2>
+    <ul>
+      <li>Ustawienia → <b>Motyw Aplikacji</b>: 15 motywów (jasne, ciemne, <b>Czerń OLED</b>).</li>
+      <li>Zmiana jest <b>natychmiastowa</b> w całej apce (karty, nagłówki, wykresy).</li>
+      <li>Na starcie tło jest jednolite; w reszcie kategorii widać gradient motywu.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2>🔊 <span class="em">Dźwięki</span> — 3 przełączniki</h2>
+    <div class="step"><b class="num">1</b><b>Wszystkie dźwięki</b> — główny włącznik. Wyłączone trzyma się <b>na zawsze</b> (też po restarcie).</div>
+    <div class="step"><b class="num">2</b><b>Dźwięk klawiatury</b> (klikanie przy pisaniu) i <b>Efekty</b> (sukcesy, fanfary).</div>
+    <div class="step"><b class="num">3</b>Każdy wraca tym samym przełącznikiem — w(app) nic nie ginie.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2>★🔒 <span class="em">Funkcje</span>: gwiazdki i kapsuły</h2>
+    <div class="step"><b class="num">1</b><b>Ocena dnia OFF</b> = sekcja gwiazdek <b>znika całkiem</b> z edytora dnia. ON = wraca.</div>
+    <div class="step"><b class="num">2</b><b>Kapsuły OFF</b> = nie utworzysz nowych (panel znika z edytora) + info w Notatkach; <b>istniejące zapieczętowane dalej widać</b> (treści nie widać).</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2>🔔 <span class="em">Przypomnienia</span> i kopie</h2>
+    <ul>
+      <li><b>Przypomnienia</b>: włącznik + godziny + <b>wyślij testowe</b> (sprawdź dźwięk i baner).</li>
+      <li><b>Kopia zapasowa</b>: Dane → <b>Pobierz pełną kopię (.json)</b> — dziennik, notatki, sport, dieta, klucze, ustawienia.</li>
+      <li><b>Import</b>: Dane → Import → wklej/wybierz plik → <b>Podgląd</b> → Importuj (łączy bez duplikatów).</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2>🎨 <span class="em">Motywy</span> z bliska</h2>
+    <ul>
+      <li>Kafelek pokazuje <b>tło i akcent</b>; wybrany ma ✓ i obwódkę. Zmiana działa <b>natychmiast</b> wszędzie.</li>
+      <li><b>Czerń OLED</b> = totalna czerń (start bez gradientu); jasne (blossom, sand) = pastelowe tła.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2>🔑 <span class="em">Klucze</span> w praktyce</h2>
+    <ul>
+      <li>Wklejony klucz widać jako <b>GŁÓWNY</b> (pierwszy) lub ZAPAS — środek ukryty gwiazdkami.</li>
+      <li>Bez klucza AI odpowiada gotowcem z linkiem do Ustawień — <b>wklej klucz, nie szukaj błędu gdzie indziej</b>.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2>🔊 <span class="em">Dźwięki</span> szczegółowo</h2>
+    <ul>
+      <li><b>Dźwięk klawiatury</b>: ciche klikanie przy każdym znaku. Wkurza? Wyłącz tylko ten.</li>
+      <li><b>Efekty</b>: arpeggio przy sukcesie, fanfara przy passie, blipy przy stukach.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2>★🔒 <span class="em">Funkcje</span> i przypomnienia</h2>
+    <ul>
+      <li><b>Funkcje</b>: dwa przełączniki (gwiazdki, kapsuły) — zielony = włączone, widać od razu.</li>
+      <li><b>Przypomnienia</b>: godziny + <b>testowe powiadomienie</b> — przychodzi jak zwykłe, ze sprawdzonym dźwiękiem.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2>💾 <span class="em">Kopia zapasowa</span> w praktyce</h2>
+    <ul>
+      <li>Kategorie → <b>Dane</b>: pasek pokazuje <b>co zawiera kopia</b> (wpisy, treningi, posiłki, klucze...).</li>
+      <li><b>Pobierz pełną kopię (.json)</b> → plik ląduje w Downloads. Trzymaj go bezpiecznie (są w nim klucze API!).</li>
+      <li>Odtworzenie: zakładka <b>Import</b> → wskaż plik → sprawdź podgląd → <b>Importuj wszystko</b>.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-011.png" loading="lazy" alt="Kopia zapasowa"></div><div class="cap">📍 Kategorie → Dane (zakładka Backup)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2>📥📤 <span class="em">Import i eksport</span> danych</h2>
+    <ul>
+      <li>Kategorie → <b>Dane</b>: zakładki <b>Backup</b> (pełna kopia), <b>Eksport</b> (wybrane), <b>Import</b>, <b>Media</b>.</li>
+      <li>Import: wklej JSON albo wybierz plik → <b>Sprawdź plik</b> (podgląd) → <b>Importuj wszystko</b> (łączy bez duplikatów).</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2>Selektywny <span class="em">eksport</span> i media</h2>
+    <ul>
+      <li>Zakładka <b>Eksport</b>: zaznacz konkretne dni, notatki, nawyki czy ulubione i pobierz tylko je.</li>
+      <li>Zakładka <b>Media</b> pakuje zdjęcia/nagrania do ZIP-a.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">6 / Ustawienia</div>
+    <h2><span class="em">Motywy</span>: trzy światy</h2>
+    <ul>
+      <li><b>Leśna Głusza</b> (domyślna zieleń), <b>blossom</b> (jasny róż), <b>Czerń OLED</b> (totalna czerń).</li>
+      <li>Motyw zmienia całą apkę naraz: karty, nagłówki, wykresy, pigułki i sport.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-014.png" loading="lazy" alt="Motyw leśny"></div><div class="cap">Ustawienia → Motyw (tu: Leśna Głusza; są też blossom i OLED)</div>
+</section>
+
+<!-- ============ DZIENNIK ============ -->
+<section class="slide" id="dziennik">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2><span class="em">Dodawanie</span> wpisu</h2>
+    <div class="step"><b class="num">1</b>Kategorie → <b>Dziennik</b> → <b>+</b> (lub „Stwórz Wpis" ze Startu).</div>
+    <div class="step"><b class="num">2</b>Tytuł + data (wstecz też można) → edytor jak niżej.</div>
+    <div class="step"><b class="num">3</b><b>✓ Gotowe</b> zapisuje. Usunięcie: kosz z potwierdzeniem.</div>
+  </div>
+  <div class="img"><div class="shots"><img class="on" src="assets/screen-015.png" loading="lazy" alt="Edytor dnia"><img src="assets/screen-016.png" loading="lazy" alt="Lista dni"><img src="assets/screen-018.png" loading="lazy" alt="Widok tygodnia"><img src="assets/screen-024.png" loading="lazy" alt="Nowy dzień"></div><div class="cap">📍 Cały Dziennik: edytor, lista, tydzień, nowy wpis (przewija się)</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2><span class="em">Pisanie / podgląd</span> + pigułki</h2>
+    <ul>
+      <li><b>✏ Pisanie</b>: zwykły tekst + znaczniki (np. <b>[/b]…[/b]</b>, <b>#dzien-…</b>).</li>
+      <li><b>👁 Podgląd</b>: sformatowany tekst + klikalne <b>pigułki 📍</b> (przenoszą do dni/notatek/planów).</li>
+      <li><b>Tryb zapamiętuje się</b> — po wyjściu i powrocie jest ten sam.</li>
+      <li>Pigułki działają też <b>w pogrubieniach</b>; końcowa kropka już ich nie psuje.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2>★ <span class="em">Gwiazdki-połówki</span></h2>
+    <div class="step"><b class="num">1</b>Sekcja <b>Ocena dnia</b> w edytorze: stuknij <b>lewą połowę</b> = 0,5 (np. 3,5★), prawą = całość.</div>
+    <div class="step"><b class="num">2</b>Powtórne stuknięcie tej samej oceny <b>czyści</b>; przycisk <b>Wyczyść</b> też.</div>
+    <div class="step"><b class="num">3</b><b>Ukryj</b> chowa sekcję; całkowite wyłączenie: Ustawienia → Funkcje.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2>Tagi, foldery, <span class="em">załączniki</span></h2>
+    <ul>
+      <li><b>+ Nowy tag</b> przy wpisie; tagi filtrują listę dni.</li>
+      <li><b>+ Dodaj plik</b>: zdjęcia, audio, wideo, PDF do wpisu.</li>
+      <li><b>🎙 Przytrzymaj 3 s aby nagrać</b> notatkę głosową + transkrypcja do tekstu.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2>Szablony i <span class="em">tydzień</span></h2>
+    <ul>
+      <li><b>Szablony</b>: gotowy szkielet dnia jednym stukiem („Stwórz dzień z szablonu").</li>
+      <li>Przełącznik <b>Dni / Tygodnie</b>: podsumowania tygodnia (<b>isWeekly</b>) widać tylko w Tygodniach.</li>
+      <li>Duże strzałki <b>↓ ↑</b> (120 px) skaczą na dół / górę listy.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2><span class="em">Lista</span> dni</h2>
+    <ul>
+      <li>Kategorie → <b>Dziennik</b>: karty dni od najnowszego (tytuł, data, ocena, początek treści).</li>
+      <li>Stuknij kartę, żeby otworzyć edytor; <b>+</b> na dole/zakładce dodaje nowy dzień.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-016.png" loading="lazy" alt="Lista dni"></div><div class="cap">📍 Kategorie → Dziennik (lista)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2><span class="em">Dół edytora</span>: tagi i pliki</h2>
+    <ul>
+      <li><b>+ Nowy tag</b> przy wpisie; tagi filtrują listę dni (stuknij tag na liście).</li>
+      <li><b>+ Dodaj plik</b>: zdjęcia, audio, wideo, PDF do wpisu (miniaturki w edytorze).</li>
+      <li><b>🎙 Przytrzymaj 3 s aby nagrać</b> notatkę głosową + transkrypcja do tekstu (potrzebny mikrofon i klucz).</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-017.png" loading="lazy" alt="Dół edytora"></div><div class="cap">📍 Edytor dnia (przewiń w dół)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2>Widok <span class="em">tygodnia</span></h2>
+    <ul>
+      <li>Przełącznik <b>Dni / Tygodnie</b> grupuje wpisy tygodniami z numeracją.</li>
+      <li><b>Podsumowania tygodnia</b> (isWeekly) widać <b>tylko</b> w Tygodniach — w Dniach ich nie ma.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-018.png" loading="lazy" alt="Widok tygodnia"></div><div class="cap">📍 Dziennik → zakładka Tygodnie</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2><span class="em">Ocena dnia</span> z bliska</h2>
+    <ul>
+      <li>Sekcja <b>★ Ocena dnia</b> na dole edytora: 5 gwiazdek SVG (zawsze ostre).</li>
+      <li>Stuknij <b>lewą połowę</b> = 0,5 (np. 3,5★), <b>prawą</b> = całość; powtórka czyści.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-019.png" loading="lazy" alt="Gwiazdki"></div><div class="cap">📍 Edytor dnia (dół, sekcja Ocena dnia)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2><span class="em">Lista</span> dni i dodawanie</h2>
+    <ul>
+      <li>Karty od najnowszego: tytuł, data, ocena, początek treści. Stuknij, żeby otworzyć.</li>
+      <li>Zielony <b>+</b> tworzy pusty dzień na dziś (tytuł dopiszesz w edytorze).</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-020.png" loading="lazy" alt="Lista dni"></div><div class="cap">Kategorie → Dziennik (lista)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2>Dół edytora: <span class="em">tagi i pliki</span></h2>
+    <ul>
+      <li><b>+ Nowy tag</b> przy wpisie; stuknięty tag na liście filtruje dni.</li>
+      <li><b>+ Dodaj plik</b>: zdjęcia, audio, wideo, PDF. <b>🎙 Przytrzymaj 3 s</b> nagrywa głosówkę z transkrypcją.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-021.png" loading="lazy" alt="Dół edytora"></div><div class="cap">Edytor dnia (przewiń w dół)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2>Widok <span class="em">tygodnia</span></h2>
+    <ul>
+      <li>Przełącznik <b>Dni / Tygodnie</b> grupuje wpisy tygodniami z numeracją.</li>
+      <li><b>Podsumowania tygodnia</b> widać tylko tutaj — w widoku Dni ich nie ma.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-022.png" loading="lazy" alt="Widok tygodnia"></div><div class="cap">Dziennik → zakładka Tygodnie</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2><span class="em">Ocena dnia</span> z bliska</h2>
+    <ul>
+      <li>Sekcja na dole edytora: 5 gwiazdek SVG, zawsze ostrych.</li>
+      <li><b>Lewa połowa = 0,5</b> (np. 3,5★), prawa = całość; powtórka czyści ocenę.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-023.png" loading="lazy" alt="Gwiazdki"></div><div class="cap">Edytor dnia (dół, sekcja Ocena dnia)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">7 / Dziennik</div>
+    <h2><span class="em">Nowy</span> pusty dzień</h2>
+    <ul>
+      <li>Zielony <b>+</b> zakłada wpis z dzisiejszą datą — tytuł, ocenę i treść uzupełniasz w edytorze.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-024.png" loading="lazy" alt="Nowy dzień"></div><div class="cap">Dziennik → zielony +</div>
+</section>
+
+<!-- ============ NOTATKI ============ -->
+<section class="slide" id="notatki">
+  <div class="txt">
+    <div class="kicker">8 / Notatki</div>
+    <h2><span class="em">Dodawanie</span> i lista</h2>
+    <ul>
+      <li>Kategorie → <b>Notatki</b> → <b>+ Dodaj notatkę</b>: tytuł + treść + foldery + tagi.</li>
+      <li>Kapsuły-czasowe i zwykłe notatki na jednej liście (zapieczętowane z kłódką).</li>
+      <li><b>🔍 Szukaj</b> filtruje po tytule, treści i tagach.</li>
+    </ul>
+  </div>
+  <div class="img"><div class="shots"><img class="on" src="assets/screen-025.png" loading="lazy" alt="Lista notatek"><img src="assets/screen-027.png" loading="lazy" alt="Edytor notatki"><img src="assets/screen-026.png" loading="lazy" alt="Kapsuła czasu"></div><div class="cap">📍 Całe Notatki: lista, edytor, kapsuła czasu (przewija się)</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">8 / Notatki</div>
+    <h2>🔒 <span class="em">Kapsuła czasu</span> krok po kroku</h2>
+    <div class="step"><b class="num">1</b>W edytorze notatki: sekcja <b>🔒 Kapsuła</b> → wybierz <b>datę i godzinę</b> (kalendarz albo „za X dni").</div>
+    <div class="step"><b class="num">2</b><b>„Tak, zablokuj teraz!"</b> → potwierdź. Od tej pory treść jest schowana.</div>
+    <div class="step"><b class="num">3</b>Na liście i w podglądzie widać tylko <b>kłódkę + licznik</b> do otwarcia.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">8 / Notatki</div>
+    <h2>🔒 Tak wygląda <span class="em">zapieczętowana</span></h2>
+    <ul>
+      <li>Zamiast treści: <b>kłódka, licznik do otwarcia i data odblokowania</b>.</li>
+      <li>Możesz tylko <b>wydłużyć</b> blokadę (nigdy skrócić). AI jej nie czyta.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-026.png" loading="lazy" alt="Zapieczętowana kapsuła"></div><div class="cap">📍 Notatki → stuknij zapieczętowaną (ekran kłódki)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">8 / Notatki</div>
+    <h2>Otwarcie, <span class="em">wygasanie</span>, ukrywanie</h2>
+    <ul>
+      <li>Po dacie kapsuła <b>otwiera się sama</b> (treść wraca, ozdobniki znikają).</li>
+      <li><b>Wyłącznik</b> (Ustawienia → Funkcje → Kapsuły): brak tworzenia + info w Notatkach; istniejące dalej zapieczętowane.</li>
+    <li><b>AI nigdy nie czyta</b> zapieczętowanych treści (ani wyszukiwarka ich nie podgląda).</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">8 / Notatki</div>
+    <h2><span class="em">Edytor</span> nowej notatki</h2>
+    <ul>
+      <li>Duże pole tytułu + treść, wybór folderu i tagi. Zapisuje się samoczynnie.</li>
+      <li>Na dole: formatowanie, załączniki i sekcja kapsuły czasu (osobny slajd).</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-027.png" loading="lazy" alt="Edytor notatki"></div><div class="cap">Notatki → + Dodaj notatkę</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">8 / Notatki</div>
+    <h2><span class="em">Szukanie</span> w notatkach</h2>
+    <ul>
+      <li>Pole szukaj filtruje <b>na żywo</b> po tytule i treści (wystarczy kilka liter).</li>
+      <li>Działa łącznie z folderami: najpierw folder, potem doprecyzuj tekstem.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-025.png" loading="lazy" alt="Szukanie w notatkach"></div><div class="cap">Notatki → pole Szukaj</div>
+</section>
+
+<!-- SZABLONY usuniete -->
+
+<!-- ============ CN ============ -->
+<section class="slide" id="cn">
+  <div class="txt">
+    <div class="kicker">10 / Nawyki i Cytaty</div>
+    <h2>Kategoria <span class="em">CN</span> — dwa w jednym</h2>
+    <ul>
+      <li>Jedna kategoria, dwie zakładki na górze: <b>🎯 Nawyki</b> i <b>💬 Cytaty</b>.</li>
+      <li>Przełączasz stuknięciem; apka pamięta, gdzie byłeś.</li>
+    </ul>
+  </div>
+  <div class="img"><div class="shots"><img class="on" src="assets/screen-029.png" loading="lazy" alt="Nawyki"><img src="assets/screen-030.png" loading="lazy" alt="Szablon nawyków"><img src="assets/screen-032.png" loading="lazy" alt="Cytaty"></div><div class="cap">📍 Cała kategoria CN: nawyki, szablon, cytaty (przewija się)</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">10 / Nawyki i Cytaty</div>
+    <h2><span class="em">Dodawanie</span> nawyku</h2>
+    <div class="step"><b class="num">1</b>CN → Nawyki → <b>Szablon</b> (lista celów) lub <b>+ Nowy</b> (własna nazwa + emoji + kolor).</div>
+    <div class="step"><b class="num">2</b>Odhaczaj <b>checkboxem</b> na dany dzień (kalendarz na górze).</div>
+    <div class="step"><b class="num">3</b>Edycja (✏) i usuwanie (🗑) są w wierszu szablonu.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">10 / Nawyki i Cytaty</div>
+    <h2>Kalendarz, <span class="em">passy</span>, daty</h2>
+    <ul>
+      <li><b>Kalendarz</b> miesięczny: stuknij dzień, żeby zobaczyć/odhaczyć nawyki z tej daty.</li>
+      <li><b>Passy i statystyki</b> liczą się z dat wykonania (realne dni, bez poślizgu stref).</li>
+      <li>Do karty: <b>📝 notatka dzienna</b> (np. „wypiłem 5 szklanek") + zadania <b>jednorazowe</b> na ten dzień.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">10 / Nawyki i Cytaty</div>
+    <h2>Kopiowanie <span class="em">dla daty</span></h2>
+    <div class="step"><b class="num">1</b>Nad kartami (nagłówek NAWYKI) jest <b>📍 Kopiuj lokalizację</b> — kopiuje link z <b>wybraną datą</b> (<b>#nawyk-YYYY-MM-DD</b>).</div>
+    <div class="step"><b class="num">2</b>Wklej link w notatce/dniu → stuknięcie pigułki otwiera <b>CN na tej dacie</b>.</div>
+    <div class="step"><b class="num">3</b>Na kartach nie ma już osobnych przycisków — jeden wspólny dla daty.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">10 / Nawyki i Cytaty</div>
+    <h2>💬 <span class="em">Cytaty</span></h2>
+    <div class="step"><b class="num">1</b>Zakładka <b>Cytaty</b> → <b>+ Dodaj</b>: tekst + autor + folder.</div>
+    <div class="step"><b class="num">2</b><b>Foldery</b> grupują cytaty (np. Motywacja); edycja zmienia też folder.</div>
+    <div class="step"><b class="num">3</b><b>🎲 Losuj</b> pokazuje losowy cytat na dziś.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">10 / Nawyki i Cytaty</div>
+    <h2>Sekcja <span class="em">Szablon</span> — skąd brać nawyki?</h2>
+    <ul>
+      <li>Przycisk <b>Szablon</b> rozwija listę gotowych celów (medytacja, ruch, czytanie) — stuknij, żeby dodać od razu.</li>
+      <li>Nie ma Twojego? <b>+ Nowy</b> tworzy własny: nazwa + emoji + kolor (koloruje pasek nawyku).</li>
+      <li>Cele z szablonu trafiają na listę i od razu liczą passy.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-030.png" loading="lazy" alt="Szablon nawyków"></div><div class="cap">CN - Nawyki - przycisk Szablon</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">10 / Nawyki i Cytaty</div>
+    <h2>Własny <span class="em">nowy nawyk</span></h2>
+    <ul>
+      <li>Formularz: <b>nazwa</b>, <b>emoji</b> z palety, <b>kolor</b> z kropek.</li>
+      <li>Zapisz — nawyk ląduje na liście z pustą passą; odhaczanie zaczyna dziś.</li>
+      <li>Edycja zmienia wszystko wstecz bez utraty wykonań; kosz usuwa z potwierdzeniem.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-031.png" loading="lazy" alt="Nowy nawyk"></div><div class="cap">CN - Nawyki - Szablon - formularz</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">10 / Nawyki i Cytaty</div>
+    <h2><span class="em">Dodawanie</span> cytatu — okienko</h2>
+    <ul>
+      <li>Przycisk <b>+ Dodaj</b> otwiera okienko: duży <b>tekst cytatu</b>, autor, wybór folderu.</li>
+      <li>Zapisz — cytat wpada na listę i do folderu; licznik rośnie.</li>
+      <li>Z tego samego miejsca edytujesz i usuwasz istniejące.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-032.png" loading="lazy" alt="Nowy cytat"></div><div class="cap">CN - Cytaty - Dodaj</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">12 / Sport</div>
+    <h2><span class="em">Dodawanie</span> treningu</h2>
+    <ul>
+      <li>W zakładce Trening stuknij <b>+ Dodaj</b>: z planu (sesja z gotowymi seriami) albo od zera.</li>
+      <li>Jednego dnia może być <b>wiele treningów</b> (np. rano bieg, wieczorem siłownia).</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-033.png" loading="lazy" alt="Nowy trening"></div><div class="cap">Sport → Trening → + Dodaj</div>
+</section>
+
+<!-- ============ DIETA ============ -->
+<section class="slide" id="dieta">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2><span class="em">Dzień</span> diety i cele</h2>
+    <ul>
+      <li>Zakładki: <b>📅 Dziś</b> (posiłki + paski kcal/makro), Tydzień, AI Chat, <b>⚙️ Profil</b> (cele).</li>
+      <li><b>Profil</b>: kalorie i makro docelowe, waga ciała, <b>ulubione z wyszukiwarką</b>.</li>
+      <li>Strzałki <b>‹ ›</b> zmieniają dzień; każdy dzień ma też notatkę.</li>
+    </ul>
+  </div>
+  <div class="img"><div class="shots"><img class="on" src="assets/screen-034.png" loading="lazy" alt="Dieta — Dziś"><img src="assets/screen-036.png" loading="lazy" alt="Opis — AI"><img src="assets/screen-037.png" loading="lazy" alt="Ręcznie"><img src="assets/screen-038.png" loading="lazy" alt="Ulubione"></div><div class="cap">📍 Cała Dieta: dzień, dodawanie AI i ręczne, ulubione (przewija się)</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2>🎯 <span class="em">Cele</span> w profilu</h2>
+    <ul>
+      <li>Zakładka <b>⚙️ Profil</b>: wpisz <b>kalorie i makro docelowe</b> (kcal, białko, węgle, tłuszcze, woda).</li>
+      <li>Paski na ekranie dnia pokazują <b>ile zjadłeś vs cel</b> — od razu widać braki i nadwyżki.</li>
+      <li>Tu też: <b>waga ciała</b> (z wykresem) i <b>ulubione z wyszukiwarką</b> (szybkie dodawanie).</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2>Dodawanie: <span class="em">AI i kod</span></h2>
+    <div class="step"><b class="num">1</b>Zielony <b>Dodaj</b> → zakładka <b>📝 Opis</b>: wpisz co zjadłeś lub dodaj <b>zdjęcie</b> → <b>Analizuj AI</b>.</div>
+    <div class="step"><b class="num">2</b>Sprawdź <b>podgląd</b> (kcal, B/W/T, waga) → <b>Dodaj do diety</b>.</div>
+    <div class="step"><b class="num">3</b>Zakładka <b>🔍 Kod</b>: wpisz EAN → dane z bazy OpenFoodFacts (na 100 g).</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2>Dodawanie: <span class="em">ręcznie + gramatura</span></h2>
+    <div class="step"><b class="num">1</b>Zakładka <b>✍ Ręcznie</b>: nazwa + kcal + białko/węgle/tłuszcze + <b>gramatura</b>.</div>
+    <div class="step"><b class="num">2</b>Przycisk <b>⚖ Przelicz wg gramatury</b> mnoży wartości (pola = na 100 g).</div>
+    <div class="step"><b class="num">3</b><b>Dodaj posiłek</b> zapisuje z wagą.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2>Edycja: <span class="em">wzór i panel wagowy</span></h2>
+    <div class="step"><b class="num">1</b>Stuknij posiłek → <b>🧮 Przelicz</b> liczy kcal wzorem <b>B×4+W×4+T×9</b>.</div>
+    <div class="step"><b class="num">2</b>Panel niżej: wpisz <b>nową wagę</b> → <b>⚖ Przelicz</b> mnoży wszystko przez <b>nowa/zapisana</b>.</div>
+  </div>
+  <div class="img"><img src="assets/screen-035.png" loading="lazy" alt="Edytuj posiłek"></div><div class="cap">📍 Dieta → stuknij posiłek → Edytuj posiłek (wzór i przeliczanie wg wagi)</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2>★ <span class="em">Ulubione</span> i reszta</h2>
+    <ul>
+      <li>★ przy posiłku dodaje do ulubionych; zakładka <b>★ Ulubione</b> i Profil mają <b>wyszukiwarkę</b> + dodawanie jednym stukiem.</li>
+      <li><b>Woda</b> (+250 ml), <b>waga ciała</b> (wykres), <b>notatka dzienna</b> diety.</li>
+      <li><b>Czat dietetyczny AI</b> zna dzisiejsze posiłki i cele.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2>Zakladka <span class="em">Opis</span> (AI)</h2>
+    <ul>
+      <li>Wpisz co zjades slowami LUB dodaj zdjecie talerza, potem <b>Analizuj AI</b>.</li>
+      <li>AI zwraca <b>podglad</b>: nazwa, kcal, bialko, wegle, tluszcz, waga porcji.</li>
+      <li>Sprawdz liczby (AI czasem zle ocenia porcje) i dopiero kliknij <b>Dodaj do diety</b>.</li>
+      <li>Pola podgladu da sie recznie poprawic przed zapisem.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-036.png" loading="lazy" alt="Dodawanie przez AI"></div><div class="cap">Dieta - zielony Dodaj - zakladka Opis</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2>Zakladka <span class="em">Recznie</span></h2>
+    <ul>
+      <li>Pola: <b>nazwa, kcal, bialko, wegle, tluszcze + gramatura</b> porcji.</li>
+      <li>Przycisk <b>Przelicz wg gramatury</b> mnozy wartosci (zaklada, ze pola to wartosci na 100 g).</li>
+      <li><b>Dodaj posilek</b> zapisuje z waga — waga potem sluzy do przeliczania w edycji.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-037.png" loading="lazy" alt="Reczne dodawanie"></div><div class="cap">Dieta - Dodaj - zakladka Recznie</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2>Zakladka <span class="em">Ulubione</span></h2>
+    <ul>
+      <li>Twoje zapisane produkty (gwiazdka przy posilku dodaje). <b>Wyszukiwarka</b> filtruje po nazwie.</li>
+      <li>Jeden stuk <b>+Dodaj</b> wrzuca produkt na dzisiejsza liste z zapisanymi wartosciami.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-038.png" loading="lazy" alt="Ulubione"></div><div class="cap">Dieta - Dodaj - zakladka Ulubione</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2>Zakladka <span class="em">Tydzien</span></h2>
+    <ul>
+      <li>Slupki kcal z 7 dni + srednia. Widac, ktore dni przekroczyly cel.</li>
+      <li>Stuknij dzien, zeby podejrzec jego posilki.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2><span class="em">Czat</span> dietetyczny</h2>
+    <ul>
+      <li>Zakladka <b>AI Chat</b>: AI zna <b>dzisiejsze posilki i Twoje cele</b>.</li>
+      <li>Przyklady pytan: co dolozyc na kolacje, ile bialka mi brakuje, ocen dzisiejszy dzien.</li>
+      <li>Wymaga klucza API i internetu (jak Szybki AI).</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">11 / Dieta</div>
+    <h2><span class="em">Woda</span> i notatka dnia</h2>
+    <ul>
+      <li>Przycisk <b>+250 ml</b> nabija licznik wody (cel ustawiasz w Profilu).</li>
+      <li><b>Notatka dzienna</b>: krotki opis dnia diety (samopoczucie, wyjatki). Zapisuje sie sama.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ SPORT ============ -->
+<section class="slide" id="sport">
+  <div class="txt">
+    <div class="kicker">12 / Sport</div>
+    <h2>Zakładki: <span class="em">Trening i Plan</span></h2>
+    <ul>
+      <li><b>💪 Trening</b>: kalendarz tygodniowy + sesje z danego dnia.</li>
+      <li><b>📋 Plan</b>: Twoje plany treningowe i przypisanie do dni.</li>
+      <li>Pola i przyciski mają wyraźne obramowania w jasnych i ciemnych motywach.</li>
+    </ul>
+  </div>
+  <div class="img"><div class="shots"><img class="on" src="assets/screen-042.png" loading="lazy" alt="Sport — Trening"><img src="assets/screen-045.png" loading="lazy" alt="Sport — Plan"></div><div class="cap">📍 Cały Sport: Trening i Plan (przewija się)</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">12 / Sport</div>
+    <h2><span class="em">Plan</span> tygodniowy</h2>
+    <div class="step"><b class="num">1</b>Zakładka Plan → <b>+ Nowy</b>: nazwa planu.</div>
+    <div class="step"><b class="num">2</b>Dodaj <b>ćwiczenia</b> (nazwa, tryb Siłownia/Dystans, serie, powtórzenia, ciężar, rozgrzewka).</div>
+    <div class="step"><b class="num">3</b>Przypisz plan do dni tygodnia (PN–NIEDZ).</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">12 / Sport</div>
+    <h2><span class="em">Trening</span> dnia</h2>
+    <div class="step"><b class="num">1</b>Zakładka Trening → dzień → <b>+ Dodaj</b> (z planu albo od zera).</div>
+    <div class="step"><b class="num">2</b>W sesji: wiele treningów dziennie, edycja serii, notatka 📝, usuwanie.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">12 / Sport</div>
+    <h2>Zakładka <span class="em">Trening</span></h2>
+    <ul>
+      <li>Kalendarz tygodniowy + lista <b>sesji z wybranego dnia</b> (nazwa planu, liczba ćwiczeń).</li>
+      <li>Stuknij sesję, żeby ją <b>rozwinąć</b> (serie, powtórzenia, ciężary) lub edytować.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-043.png" loading="lazy" alt="Trening"></div><div class="cap">Kategorie → Sport → zakładka Trening</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">12 / Sport</div>
+    <h2><span class="em">Rozwinięta</span> sesja</h2>
+    <ul>
+      <li>W środku: ćwiczenia z seriami (np. 2×8 powtórzeń po 60 kg).</li>
+      <li>Edycja serii, dopisywanie ćwiczeń, notatka do sesji, usuwanie całości.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-044.png" loading="lazy" alt="Sesja"></div><div class="cap">Sport → Trening → stuknij sesję</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">12 / Sport</div>
+    <h2><span class="em">Edytor</span> planu</h2>
+    <ul>
+      <li>Ołówek przy planie otwiera edytor: nazwa, lista ćwiczeń, tryb <b>Siłownia/Dystans</b>.</li>
+      <li>Pola: serie, powtórzenia, ciężar + rozgrzewka (serie R). Zmiany zapisują się od razu.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-045.png" loading="lazy" alt="Edytor planu"></div><div class="cap">Sport → Plan → ołówek przy planie</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">12 / Sport</div>
+    <h2><span class="em">Dodawanie</span> treningu</h2>
+    <ul>
+      <li>W zakładce Trening stuknij <b>+ Dodaj</b>: z planu (sesja z gotowymi seriami) albo od zera.</li>
+      <li>Jednego dnia może być <b>wiele treningów</b> (np. rano bieg, wieczorem siłownia).</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-046.png" loading="lazy" alt="Nowy trening"></div><div class="cap">Sport → Trening → + Dodaj</div>
+</section>
+
+<!-- ============ LIMITY ============ -->
+<section class="slide" id="limity">
+  <div class="txt">
+    <div class="kicker">13 / Limity</div>
+    <h2>⏳ <span class="em">Limity ekranu</span></h2>
+    <ul>
+      <li>Lista apek z dziennymi limitami minut + historia sesji danego dnia.</li>
+      <li>Bez uprawnień (Ułatwienia dostępu) apka sama pokazuje ścieżkę nadania.</li>
+      <li>Zakładki: <b>Zestawienie</b> (dziś) i <b>Ustawienia</b> (limity).</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-047.png" loading="lazy" alt="Limity"></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">13 / Limity</div>
+    <h2><span class="em">Dodanie</span> limitu</h2>
+    <div class="step"><b class="num">1</b>Ustawienia → <b>+ Dodaj aplikację</b> → wybierz z listy zainstalowanych.</div>
+    <div class="step"><b class="num">2</b>Ustaw: <b>minuty dziennie</b>, pauzę (grace), pytanie końcowe, własny tekst i czasy.</div>
+    <div class="step"><b class="num">3</b>Zapisz — od teraz apka jest pilnowana.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">13 / Limity</div>
+    <h2><span class="em">Sesja</span>: bramka i pauza</h2>
+    <div class="step"><b class="num">1</b>Otwierasz limitowaną apkę → <b>bramka</b>: powód + czas → Start.</div>
+    <div class="step"><b class="num">2</b>Wyjście = <b>pauza</b> (grace); szybki powrót bez bramki.</div>
+    <div class="step"><b class="num">3</b><b>+1 min</b> przedłuża; po czasie pytanie końcowe i podsumowanie.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">13 / Limity</div>
+    <h2>Zakładka <span class="em">Ustawienia</span> limitów</h2>
+    <ul>
+      <li>Tu żyje lista Twoich limitów: apka, minuty dziennie, pauza, pytanie końcowe.</li>
+      <li><b>+ Dodaj aplikację</b> bierze z listy zainstalowanych (na telefonie; w przeglądarce pusto).</li>
+      <li>Stuknij limit, żeby edytować czasy, własne teksty i progi dźwiękowe.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ DANE ============ -->
+<section class="slide" id="dane">
+  <div class="txt">
+    <div class="kicker">Dane i kopie</div>
+    <h2>Twoje dane <span class="em">sa Twoje</span></h2>
+    <ul>
+      <li>Wszystko siedzi <b>na telefonie</b>: web - localStorage (ok. 35 kluczy), Android - Room + DataStore (pakiet <b>pl.dzienniczek.notatnik</b>).</li>
+      <li><b>Pelna kopia JSON (v4)</b> + <b>ZIP z mediami</b> - zdjecia i nagrania tez sie zapisuja.</li>
+      <li><b>Import z podgladem</b>: walidacja + scalanie bez duplikatow. Eksport selektywny (wybrane dni, notatki, posilki, treningi).</li>
+      <li><b>Plik instalacyjny</b> obok instrukcji: <b>installer-dziennik.apk</b> (ok. 11 MB).</li>
+    </ul>
+    <div class="warn">Zrob kopie PRZED kazda aktualizacja APK: Dane - Pobierz pelna kopie. Aktualizuj na wierzch, nigdy nie odinstalowuj.</div>
+    <div class="tip">Backup to 10 sekund spokoju: raz w tygodniu wyeksportuj ZIP i trzymaj w Drive lub na kompie.</div>
+  </div>
+  <div class="img"><img src="assets/screen-011.png" loading="lazy" alt="Dane — Backup"><div class="cap">📍 Kategorie → Dane → Backup: pełna kopia JSON + ZIP z mediami</div></div>
+</section>
+
+<!-- ============ PLANY ============ -->
+<section class="slide" id="plany">
+  <div class="txt">
+    <div class="kicker">14 / Plany</div>
+    <h2><span class="em">Dzień i tydzień</span></h2>
+    <ul>
+      <li>Przełącznik <b>Dzień / Tydzień</b>; kalendarz dni i 7 kart PON–NIEDZ.</li>
+      <li>Tydzień: liczniki zadań, wyróżniony dziś, przycisk <b>✨ Gotowy przykład</b>.</li>
+    </ul>
+  </div>
+  <div class="img"><div class="shots"><img class="on" src="assets/screen-049.png" loading="lazy" alt="Plany — Tydzień"><img src="assets/screen-050.png" loading="lazy" alt="Plany — Dzień"><img src="assets/screen-052.png" loading="lazy" alt="Wypełniony tydzień"></div><div class="cap">📍 Całe Plany: tydzień, dzień, gotowy przykład (przewija się)</div></div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">14 / Plany</div>
+    <h2><span class="em">Dodawanie</span> punktu planu</h2>
+    <div class="step"><b class="num">1</b><b>+ Dodaj</b> (w dniu lub w karcie dnia tygodnia): tytuł + godzina + waga.</div>
+    <div class="step"><b class="num">2</b>Podpunkty-checklista, checkbox ✓, edycja, ▲▼ kolejność, × usuwanie.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">14 / Plany</div>
+    <h2>Kolejność i <span class="em">postęp</span></h2>
+    <ul>
+      <li>Sortowanie <b>wg czasu</b> albo <b>ręczne</b> (tryb manual trzyma Twoją kolejność).</li>
+      <li>Pasek <b>postępu i wagi</b>, sekcja „W międzyczasie" na zadania bez godziny.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">14 / Plany</div>
+    <h2>Zakładka <span class="em">Dzień</span></h2>
+    <ul>
+      <li>Oś czasu wybranego dnia: punkty z godzinami, checkboxy, pasek postępu.</li>
+      <li>Strzałki ‹ › zmieniają dzień; kalendarz na górze skacze dalej.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-050.png" loading="lazy" alt="Dzień planu"></div><div class="cap">Kategorie → Plany → zakładka Dzień</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">14 / Plany</div>
+    <h2>Okienko <span class="em">dodawania</span> punktu</h2>
+    <ul>
+      <li>Przycisk <b>+ Dodaj</b>: tytuł, godzina od–do, waga (ważność), opis.</li>
+      <li>Przełącznik <b>„W międzyczasie"</b> dla zadań bez godziny (lądują w osobnej sekcji).</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">14 / Plany</div>
+    <h2>Gotowy <span class="em">przykład</span> tygodnia</h2>
+    <ul>
+      <li>Przycisk <b>✨ Gotowy przykład</b> w widoku tygodnia wypełnia 7 dni przykładowymi zadaniami.</li>
+      <li>Idealne na start: zobaczysz jak działa układ, liczniki i checkboxy — potem edytujesz po swojemu.</li>
+    </ul>
+  </div>
+  <div class="img"><img src="assets/screen-052.png" loading="lazy" alt="Przykład"></div><div class="cap">Plany → Tydzień → Gotowy przykład</div>
+</section>
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">14 / Plany</div>
+    <h2>Wypełniony <span class="em">tydzień</span></h2>
+    <ul>
+      <li>Tak wygląda tydzień z zadaniami: karty dni, liczniki „n/m zadań", dzisiejszy dzień wyróżniony.</li>
+      <li>Przesuwanie ▲▼ zmienia kolejność (tryb manual), ✓ odhacza, × usuwa.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- TECH usuniety -->
+
+<section class="slide">
+  <div class="txt">
+    <div class="kicker">Koniec</div>
+    <h1>Powodzenia! 📓</h1>
+    <p style="font-size:17px;color:#3f5a4e">Dziennik — instrukcja od A do Z. Jak coś nie działa: sprawdź uprawnienia, potem kopię, potem pisz.</p>
+  </div>
+</section>
+
+
+<script>
+function cur(){var k=0;var sl=document.querySelectorAll('.slide');for(var i=0;i<sl.length;i++){if(sl[i].getBoundingClientRect().top<innerHeight/2)k=i;}return k;}
+function upd(){var sl=document.querySelectorAll('.slide');var jc=document.getElementById('curNum');if(jc)jc.textContent=cur()+1;var el=document.getElementById('total');if(el)el.textContent=sl.length;var h=document.documentElement;var p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;document.getElementById('progress').style.width=p+'%';}
+addEventListener('scroll',upd,{passive:true});upd();
+
+
+addEventListener('keydown',function(e){if(e.key==='ArrowRight'){var sl=document.querySelectorAll('.slide');var k=Math.min(sl.length-1,cur()+1);sl[k].scrollIntoView();}if(e.key==='ArrowLeft'){var sl=document.querySelectorAll('.slide');var k=Math.max(0,cur()-1);sl[k].scrollIntoView();}if(e.key==='Escape'){var o=document.querySelectorAll('.dd.open');for(var i=0;i<o.length;i++)o[i].className=o[i].id==='ddHelp'?'dd help':'dd';hideLb();}});
+var io=new IntersectionObserver(function(es){for(var i=0;i<es.length;i++){if(es[i].isIntersecting)es[i].target.className+=' vis';}},{threshold:.05});
+var _sl=document.querySelectorAll('.slide');for(var i=0;i<_sl.length;i++)io.observe(_sl[i]);
+var lb=document.createElement('div');lb.id='lb';lb.innerHTML='<img>';document.body.appendChild(lb);
+function hideLb(){lb.className='';}
+lb.onclick=hideLb;
+document.addEventListener('click',function(e){var im=e.target.closest?e.target.closest('.slide img'):null;if(im){lb.querySelector('img').src=im.src;lb.querySelector('img').alt=im.alt;lb.className='open';}});
+var _caps=document.querySelectorAll('.slide > .cap');for(var _ci=0;_ci<_caps.length;_ci++){var _p=_caps[_ci].parentNode,_im=null;for(var _k=0;_k<_p.children.length;_k++){var _c=_p.children[_k].className||'';if(_c.indexOf('img')===0){_im=_p.children[_k];break;}}if(_im)_im.appendChild(_caps[_ci]);}
+var tbtn=document.getElementById('themeBtn');
+function setTheme(d){document.body.className=d?'dark':'';tbtn.textContent=d?'☀️':'🌙';try{localStorage.setItem('dz-theme',d?'dark':'light');}catch(_e){}}
+tbtn.onclick=function(){setTheme(document.body.className.indexOf('dark')<0);};
+try{if(localStorage.getItem('dz-theme')==='dark')setTheme(true);}catch(_e){}
+var ddKat=document.getElementById('ddKat'),ddHelp=document.getElementById('ddHelp');
+document.getElementById('katBtn').onclick=function(e){e.stopPropagation();ddHelp.className='dd help';ddKat.className=ddKat.className.indexOf('open')>-1?'dd':'dd open';};
+document.getElementById('helpBtn').onclick=function(e){e.stopPropagation();ddKat.className='dd';ddHelp.className=ddHelp.className.indexOf('open')>-1?'dd help':'dd help open';};
+document.addEventListener('click',function(e){var d=e.target.closest?e.target.closest('.dd'):null;if(!d){ddKat.className='dd';ddHelp.className='dd help';}});
+
+var KATS=[{"id":"poznawanie-3-1","icon":"D","name":"Dziennik","desc":"Wpisy, edytor, narzedzia, tydzien.","f":[["Dodaj wpis","kategorie i przejscie do dzialu","poznawanie-3-1"],["Naglowek","oko, paleta, pobieranie, kosz, tytul","poznawanie-3-1"],["Edytor tekstu","misja dnia, tryby, tagi, dodaj kategorie","poznawanie-3-2"],["Narzedzia","formatowanie, tryb pisania/podgladu, usuwanie BEZ potwierdzenia, nagrania glosowe (NIE DZIALA), zalaczanie plikow","poznawanie-3-3"],["Tytul i Tydzien","data wpisu, podsumowanie tygodnia","poznawanie-3-4"]]},{"id":"poznawanie-3-5","icon":"N","name":"Notatki","desc":"Jak dni + kapsula czasu.","f":[["Notatki","dzialaja jak dni","poznawanie-3-5"],["Kapsula czasu","zapieczetowana do daty","poznawanie-3-5"]]},{"id":"cn","icon":"C","name":"CN Nawyki Cytaty","desc":"Streaki i motywacja.","f":[["Nawyki","kalendarz i passy","cn"],["Notatka nawyku","opis i zadania","cn"],["Cytaty","foldery i losowy","cn"]]},{"id":"dieta","icon":"Di","name":"Dieta","desc":"AI liczy kcal ze zdjecia.","f":[["Dzien Tydzien AI Profil","cele i woda","dieta"],["Dodaj foto i kod","barcode i analiza AI","dieta"],["Wzor kcal","bialko x4 weg x4 tl x9","dieta"]]},{"id":"sport","icon":"Sp","name":"Sport","desc":"Plany i sesje treningowe.","f":[["Plan tygodniowy","pon niedz","sport"],["Trening dnia","serie reps kg","sport"],["Edytor i szablony","historia sesji","sport"]]},{"id":"limity","icon":"L","name":"Limity","desc":"Straznik czasu ekranu.","f":[["Limit minut","lista apek","limity"],["Bramka","owod i czas start","limity"],["Pauza","grace i pytanie","limity"]]},{"id":"plany","icon":"P","name":"Plany","desc":"Dzien i tydzien.","f":[["Punkt planu","tytul godz waga","plany"],["Sortowanie","czas i reczne","plany"],["Przyklad","wypelnia 7 dni","plany"]]},{"id":"ustawienia","icon":"U","name":"Ustawienia","desc":"Motywy, klucze, dzwieki.","f":[["Motywy","jasne ciemne","ustawienia"],["Klucze Gemini","glowny i zapas","ustawienia"],["Powiadomienia","godziny i test","ustawienia"]]},{"id":"dane","icon":"Da","name":"Dane","desc":"Backup JSON i ZIP.","f":[["Pelna kopia","pobierz kopie","dane"],["Import","scalanie bez duplikatow","dane"],["Eksport","wybierasz co","dane"]]}];var HELP=[["#instalacja","Instalacja"],["#uprawnienia","Uprawnienia"],["#przewodnik","Przewodnik po stronie"]];var kl=document.getElementById('katList'),kf=document.getElementById('katFuncs');kl.innerHTML=KATS.map(function(k,i){return '<button class="cat'+(i===0?' on':'')+'" data-i="'+i+'">'+k.name+'<small>'+k.f.length+'</small></button>';}).join('');function showKat(i){var b=kl.querySelectorAll('.cat');for(var j=0;j<b.length;j++){b[j].className=j===i?'cat on':'cat';}var k=KATS[i];kf.innerHTML='<h4>'+k.name+'</h4><p>'+k.desc+'</p>'+k.f.map(function(f){var sid=f[2]||k.id;return '<a href="#'+sid+'"><b>></b>'+f[0]+' - '+f[1]+'</a>';}).join('');var links=kf.querySelectorAll('a');for(var q=0;q<links.length;q++){links[q].addEventListener('click',function(){var dd=document.getElementById('ddKat');dd.className='dd';var id=this.getAttribute('href').slice(1);setTimeout(function(){var t=document.getElementById(id);if(t){t.scrollIntoView();}},60);},false);}}
+var cats=kl.querySelectorAll('.cat');for(var ci=0;ci<cats.length;ci++){cats[ci].onclick=function(){showKat(+this.getAttribute('data-i'));};}
+showKat(0);
+var hp=document.getElementById('helpPanel');
+hp.innerHTML='<h4>Pomoc</h4>'+HELP.map(function(h){return '<a href="'+h[0]+'"><b>></b>'+h[1]+'</a>';}).join('');
+var hlinks=hp.querySelectorAll('a');for(var hl=0;hl<hlinks.length;hl++){hlinks[hl].addEventListener('click',function(){ddHelp.className='dd help';});}
+var tb=document.getElementById('topBtn');
+addEventListener('scroll',function(){tb.className=scrollY>400?'show':'';},{passive:true});
+tb.onclick=function(){scrollTo({top:0,behavior:'auto'});};
+
+var __shots=document.querySelectorAll('.shots');for(var __si=0;__si<__shots.length;__si++){(function(sc){var ims=sc.querySelectorAll('img');if(ims.length<2)return;var dw=document.createElement('div');dw.className='dots';for(var j=0;j<ims.length;j++){(function(j){var bt=document.createElement('button');bt.type='button';bt.className='dot'+(j===0?' on':'');bt.title='Zdjęcie '+(j+1);bt.onclick=function(e){e.stopPropagation();go(j);};dw.appendChild(bt);})(j);}sc.appendChild(dw);var k=0,tm=0;function go(i){ims[k].className='';dw.children[k].className='dot';k=i;ims[k].className='on';dw.children[k].className='dot on';}function tick(){go((k+1)%ims.length);}function start(){if(!tm)tm=setInterval(tick,1200);}function stop(){if(tm){clearInterval(tm);tm=0;}}start();sc.addEventListener('mouseenter',stop);sc.addEventListener('mouseleave',start);})(__shots[__si]);}
+
+</script>
+</body>
+</html>
